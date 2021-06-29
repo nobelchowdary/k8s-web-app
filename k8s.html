@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel="stylesheet" href="styles.css">
+        <header>
+                <h1 align="center"> KUBERNETES </h1>
+        </header>
+</head>
+
+<body>
+        <script>
+
+                function show() {
+                        user_inp = document.getElementById('command').value;
+                        if (user_inp.search('create') != -1) {
+                                name = prompt("Enter name");
+                                img = prompt("Enter image");
+                                if (user_inp.search('pod') != -1) {
+                                        x = 'kubectl run ' + name + ' --image ' + img + ' --kubeconfig admin.conf';
+                                }
+
+                                else {
+                                        x = 'kubectl create deployment ' + name + ' --image ' + img + ' --kubeconfig admin.conf';
+                                }
+
+                        }
+                        else if (user_inp.search('delete') != -1) {
+                                if (user_inp.search('all') != -1) {
+                                        if (user_inp.search('pods') != -1) {
+                                                x = 'kubectl delete --all pods --kubeconfig admin.conf';
+                                        }
+                                        else if (user_inp.search('deployments') != -1) {
+                                                x = 'kubectl delete --all deployments --kubeconfig admin.conf';
+                                        }
+                                        else {
+                                                x = 'kubectl delete all --all --kubeconfig admin.conf';
+                                        }
+                                }
+                                else if (user_inp.search('pod') != -1) {
+                                        name = prompt("Enter name");
+                                        x = 'kubectl delete pod ' + name + ' --kubeconfig admin.conf';
+                                }
+
+                                else if (user_inp.search('deployment') != -1) {
+                                        name = prompt("Enter name");
+                                        x = 'kubectl delete deployment ' + name + ' --kubeconfig admin.conf';
+                                }
+                        }
+                        else if (user_inp.search('describe') != -1) {
+                                if (user_inp.search('deployments') != -1) {
+                                        x = 'kubectl describe deployments --kubeconfig admin.conf';
+                                }
+                                else {
+                                        x = 'kubectl describe pods --kubeconfig admin.conf';
+                                }
+                        }
+                        else if (user_inp.search('view') != -1) {
+                                if (user_inp.search('deployments') != -1) {
+                                        x = 'kubectl get deployments --kubeconfig admin.conf';
+                                }
+                                else {
+                                        x = 'kubectl get pods --kubeconfig admin.conf';
+                                }
+                        }
+                        else if (user_inp.search('scale') != -1) {
+                                dep_name = prompt("Enter name");
+                                replicas = prompt("Enter number of replicas");
+                                x = 'kubectl scale deployment ' + dep_name + ' --replicas= ' + replicas + " --kubeconfig admin.conf";
+                        }
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("GET", "http://192.168.99.106/cgi-bin/k8s1.py?x=" + x, true);
+                        xhr.send();
+                        xhr.onload = function () {
+                                var output = xhr.responseText;
+                                document.getElementById("s1").innerHTML = output;
+                        }
+                }
+        </script>
+
+        <main>
+                <p align="center">What you want to do !!!</p>
+                <p align="center"><input id='command' /></p>
+                <p align="center"><button onclick="show()">Enter</button></p>
+                <br />
+                <pre>
+                        <div id="s1", align="center"></div>
+                </pre>
+                <br />
+                <br />
+                <div id='menu1'>
+                        <h3>Creating resources</h3>
+                        <p>Creation of pods and deployments with different docker images.
+                                Scale them if you want to do in future!</p>
+                </div>
+
+                <div id='menu1'>
+                        <h3>View the resources</h3>
+                        <p>See all pods and deployments that you have launched.</p>
+                </div>
+
+                <div id=menu1>
+                        <h3>Deleting resources</h3>
+                        <p>Deleting the  pods and deployments. You also have an option of deleting
+                                the entire enviromment if you want to do.</p>
+                </div>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+        </main>
+</body>
+
+</html>
